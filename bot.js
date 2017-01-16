@@ -15,11 +15,13 @@ function respond() {
     this.res.writeHead(200);
     postMessageComing();
     this.res.end();
-  } if(request.text && botRegex2.test(request.text)) {
+  }
+  if(request.text && botRegex2.test(request.text)) {
     this.res.writeHead(200);
     postMessageMeme();
     this.res.end();
-  } if(request.text && (botRegexStar.test(request.text) || botRegexStar2.test(request.text))) {
+  }
+  if(request.text && (botRegexStar.test(request.text) || botRegexStar2.test(request.text))) {
     this.res.writeHead(200);
     postStarImage();
     this.res.end();
@@ -208,6 +210,16 @@ function postMessageMeme() {
   botReq.end(JSON.stringify(body));
 }
 
+function randomStar() {
+   a = Math.random() * 300;
+   if (a <= 100) {
+       return "http://i68.tinypic.com/aau1js.jpg";
+   } else if (a <= 200) {
+       return "http://i64.tinypic.com/2qmfasj.jpg";
+   } else {
+      return "http://i65.tinypic.com/2z9ctmr.jpg";
+   }
+}
 function postStarImage() {
   var botResponse, options, body, botReq;
 
@@ -222,7 +234,7 @@ function postStarImage() {
   body = {
     "bot_id" : botID,
     "text" : "star",
-    "picture_url" : botResponse;
+    "picture_url" : botResponse
   };
 
   console.log('sending ' + botResponse + ' to ' + botID);
@@ -244,15 +256,6 @@ function postStarImage() {
   botReq.end(JSON.stringify(body));
 }
 
-function randomStar() {
-   a = Math.random() * 300;
-   if (a <= 100) {
-       return "http://i68.tinypic.com/aau1js.jpg";
-   } else if (a <= 200) {
-       return "http://i64.tinypic.com/2qmfasj.jpg";
-   } else {
-      return "http://i65.tinypic.com/2z9ctmr.jpg";
-   }
-}
+
 
 exports.respond = respond;
