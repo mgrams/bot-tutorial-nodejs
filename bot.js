@@ -221,7 +221,7 @@ function postStarImage() {
 
   body = {
     "bot_id" : botID,
-    "text" : '',
+    "text" : "star",
     "picture_url" : botResponse;
   };
 
@@ -243,6 +243,7 @@ function postStarImage() {
   });
   botReq.end(JSON.stringify(body));
 }
+
 function randomStar() {
    a = Math.random() * 300;
    if (a <= 100) {
