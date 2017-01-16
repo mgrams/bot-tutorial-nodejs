@@ -5,11 +5,16 @@ var botID = process.env.BOT_ID;
 
 function respond() {
   var request = JSON.parse(this.req.chunks[0]),
-      botRegex = /coming/;
+      botRegex = /coming/,
+      botRegex2 = /random meme/;
 
   if(request.text && botRegex.test(request.text)) {
     this.res.writeHead(200);
-    postMessage();
+    postMessageComing();
+    this.res.end();
+  } if(request.text && botRegex2.test(request.text)) {
+    this.res.writeHead(200);
+    postMessageMeme();
     this.res.end();
   } else {
     console.log("don't care");
@@ -18,10 +23,9 @@ function respond() {
   }
 }
 
-function postMessage() {
+function postMessageComing() {
   var botResponse, options, body, botReq;
 
-  //botResponse = cool();
   botResponse = "and arriving";
 
   options = {
@@ -53,6 +57,148 @@ function postMessage() {
   });
   botReq.end(JSON.stringify(body));
 }
+function randomMeme() {
+  a = Math.random() * 600;
+    b = Math.random() * 600;
+    c = Math.random() * 600;
 
+    if (a < 101){
+      str1 = "smol";
+    }
+    else if(a < 201){
+      str1 = "Salty";
+    }
+    else if (a < 301)
+    {
+        str1 = "Triggered";
+    }
+    else if (a < 401)
+    {
+        str1 = "Nice";
+    }
+    else if (a < 501)
+    {
+        str1 = "Alpha";
+    }
+    else if (a <= 600)
+    {
+        str1 = "BUFF";
+     }
+
+    if (b < 101)
+    {
+        str2 = "engineers";
+    }
+    else if (b < 201){
+        str2 = "Eric";
+    }
+    else if(b < 301){
+      str2 = "NUGS";
+    }
+    else if (b < 401){
+        str2 = "guys";
+    }
+    else if (b < 501)
+    {
+        str2 = "bees";
+    }
+    else if (b <= 600)
+    {
+        str2 = "yeast";
+     }
+
+    if (c < 101)
+    {
+        if (str2 == "Eric")
+        {
+            str3 = "is the worst.";
+        }
+        else {
+            str3 = "are the worst.";
+        }
+    }
+    else if (c < 201)
+    {
+        str3 = "rights activism";
+    }
+    else if (c < 301)
+    {
+        if (str2 == "Eric")
+        {
+            str3 = "finishes last";
+        }
+        else {
+            str3 = "finish last";
+            }
+    }
+    else if (c < 401)
+    {
+        str3 = "all my husbands";
+    }
+    else if (c < 501)
+    {
+        str3 = "dump";
+     }
+    else if (c <= 600)
+  {
+        if (str2 == "Eric"){
+            str3 == "is a furry";
+        }
+        else{
+            str3 = "are furries";
+        }
+    }
+
+    random1 = Math.random() * 100;
+
+    if (random1 < 71)
+    {
+        return str1 + " " + str2 + " " + str3;
+    }
+    else if (random1 < 85)
+    {
+        return "I'm " + str1 + " " + str2 + " kin";
+    }
+    else if (random1 <= 100)
+    {
+      return "Make "+ str2 + " " + str1 + " Again";
+    }
+
+
+}
+function postMessageMeme() {
+  var botResponse, options, body, botReq;
+
+  botResponse = randomMeme();
+
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
 
 exports.respond = respond;
