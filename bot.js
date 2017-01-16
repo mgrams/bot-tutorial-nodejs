@@ -7,7 +7,9 @@ function respond() {
   var request = JSON.parse(this.req.chunks[0]),
       botRegex = /coming/,
       botRegexC = /Coming/,
-      botRegex2 = /random meme/;
+      botRegex2 = /random meme/,
+      botRegexStar = /binary/,
+      botRegexStar2 = /quarks/;
 
   if(request.text && (botRegex.test(request.text) || botRegexC.test(request.text))) {
     this.res.writeHead(200);
@@ -17,7 +19,11 @@ function respond() {
     this.res.writeHead(200);
     postMessageMeme();
     this.res.end();
-  } else {
+  } if(request.text && (botRegexStar.test(request.text) || botRegexStar2.test(request.text))) {
+    this.res.writeHead(200);
+    postMessageMeme();
+    this.res.end();
+    } else {
     console.log("don't care");
     this.res.writeHead(200);
     this.res.end();
@@ -200,6 +206,52 @@ function postMessageMeme() {
     console.log('timeout posting message '  + JSON.stringify(err));
   });
   botReq.end(JSON.stringify(body));
+}
+
+function postStarImage() {
+  var botResponse, options, body, botReq;
+
+  botResponse = randomStar();
+
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : null,
+    "picture_url" : botResponse;
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
+function randomStar() {
+   a = Math.random() * 300;
+   if (a <= 100) {
+       return "http://i68.tinypic.com/aau1js.jpg";
+   } else if (a <= 200) {
+       return "http://i64.tinypic.com/2qmfasj.jpg";
+   } else {
+      return "http://i65.tinypic.com/2z9ctmr.jpg";
+   }
 }
 
 exports.respond = respond;
