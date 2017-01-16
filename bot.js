@@ -5,35 +5,35 @@ var botID = process.env.BOT_ID;
 
 function respond() {
   var request = JSON.parse(this.req.chunks[0]),
-      botRegex = /coming/,
-      botRegexC = /Coming/,
-      botRegex2 = /random meme/,
-      botRegexStar = /binary/,
-      botRegexStar2 = /quarks/
+      coming = /coming/,
+      coming2 = /Coming/,
+      meme = /random meme/,
+      star = /binary/,
+      star2 = /quarks/
       bee = /bee/,
       nutshack = /nutshack/;
 
-  if (request.text && (botRegex.test(request.text) || botRegexC.test(request.text))) {
+  if (request.text && (coming.test(request.text) || coming2.test(request.text))) {
     this.res.writeHead(200);
     postMessage("and arriving");
     this.res.end();
   }
-  if (request.text && botRegex2.test(request.text)) {
+  if (request.text && meme.test(request.text)) {
     this.res.writeHead(200);
     var msg = randomMeme();
     postMessage(msg);
     this.res.end();
   }
-  if (request.text && (botRegexStar.test(request.text) || botRegexStar2.test(request.text))) {
+  if (request.text && (star.test(request.text) || star2.test(request.text))) {
     this.res.writeHead(200);
     postStarImage();
     this.res.end();
-    }
+  }
   if (request.text && (bee.test(request.text) || nutshack.test(request.text))) {
       this.res.writeHead(200);
       postMessage("https://www.youtube.com/watch?v=jVV34E061A4");
       this.res.end();
-      } else {
+    } else {
     console.log("don't care");
     this.res.writeHead(200);
     this.res.end();
