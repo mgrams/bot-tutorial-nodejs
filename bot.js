@@ -6,9 +6,10 @@ var botID = process.env.BOT_ID;
 function respond() {
   var request = JSON.parse(this.req.chunks[0]),
       botRegex = /coming/,
+      botRegexC = /Coming/,
       botRegex2 = /random meme/;
 
-  if(request.text && botRegex.test(request.text)) {
+  if(request.text && (botRegex.test(request.text) || botRegexC.test(request.text))) {
     this.res.writeHead(200);
     postMessageComing();
     this.res.end();
