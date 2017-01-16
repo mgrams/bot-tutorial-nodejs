@@ -21,7 +21,7 @@ function respond() {
     this.res.end();
   } if(request.text && (botRegexStar.test(request.text) || botRegexStar2.test(request.text))) {
     this.res.writeHead(200);
-    postMessageMeme();
+    postStarImage();
     this.res.end();
     } else {
     console.log("don't care");
@@ -221,7 +221,7 @@ function postStarImage() {
 
   body = {
     "bot_id" : botID,
-    "text" : null,
+    "text" : '',
     "picture_url" : botResponse;
   };
 
