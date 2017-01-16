@@ -9,7 +9,9 @@ function respond() {
       botRegexC = /Coming/,
       botRegex2 = /random meme/,
       botRegexStar = /binary/,
-      botRegexStar2 = /quarks/;
+      botRegexStar2 = /quarks/
+      bee = /bee/,
+      nutshack = /nutshack/;
 
   if(request.text && (botRegex.test(request.text) || botRegexC.test(request.text))) {
     this.res.writeHead(200);
@@ -25,13 +27,53 @@ function respond() {
     this.res.writeHead(200);
     postStarImage();
     this.res.end();
-    } else {
+    }
+    if(request.text && (bee.test(request.text) || nutshack.test(request.text))) {
+      this.res.writeHead(200);
+      postVideo();
+      this.res.end();
+      } else {
     console.log("don't care");
     this.res.writeHead(200);
     this.res.end();
   }
 }
 
+function postVideo() {
+  var botResponse, options, body, botReq;
+
+  botResponse = "https://www.youtube.com/watch?v=jVV34E061A4";
+
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+
+}
 function postMessageComing() {
   var botResponse, options, body, botReq;
 
@@ -233,7 +275,7 @@ function postStarImage() {
 
   body = {
     "bot_id" : botID,
-    "text" : "star",
+    "text" : "",
     "picture_url" : botResponse
   };
 
